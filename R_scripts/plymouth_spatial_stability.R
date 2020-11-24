@@ -61,6 +61,7 @@ foc_spp <-
   filter(value > 0) %>%
   pull(key)
 
+foc_spp
 
 # create a few extra variables for this analysis
 
@@ -71,7 +72,7 @@ tot_spp <- 4
 ply_dat <- 
   ply_dat %>%
   mutate(species_richness = (tot_spp - removed) ) %>%
-  select(id_vars, grid_squares, species_richness, totcover, cover_nocrusts, foc_spp)
+  select( all_of(id_vars), grid_squares, species_richness, totcover, cover_nocrusts, all_of(foc_spp) )
 
 # create a new mixture/monoculture column
 # reorder the columns again
@@ -79,8 +80,7 @@ ply_dat <-
   ply_dat %>%
   mutate(mono_mix = if_else(removed == "3", "monoculture",
                             if_else(removed == "4", "control", 
-                                    if_else(removed == "0", "max_mixture", 
-                                            "mixture"))))
+                                    if_else(removed == "0", "max_mixture", "mixture"))))
 
 
 # remove the composition = "None" treatment as this is a general control
@@ -93,13 +93,15 @@ ply_dat <-
 # create a total cover variable from the constituent species
 ply_dat$total_cover <- 
   ply_dat %>%
-  select(foc_spp) %>%
+  select( all_of(foc_spp) ) %>%
   rowSums()
 
 # sort data to match with Lamy et al.'s function
 ply_dat <-
   ply_dat %>%
   arrange(shore, composition, pool, month)
+
+View(ply_dat)
 
 
 ### calculate stability at different scales
