@@ -87,6 +87,8 @@ ply_dat <-
 ply_dat <- 
   ply_dat %>% filter(composition != "None")
 
+View(ply_dat)
+
 
 ### stability across different levels of organisation
 
