@@ -145,7 +145,8 @@ random_RY.exp <- function(n_sp = 4, by = 0.001) {
   return(z)
 }
 
-random_RY.exp(n_sp = 4, by = 0.001)
+x <- B.ef.prep(df = ply_part, RYe = rep(0.25, 4))
+View(x$f)
 
 n <- 100
 part_out <- vector("list", length = n)
@@ -213,6 +214,18 @@ ggplot(data = df3,
 
 
 # plot covariances between monoculture yields and mixture relative abundance
+ply_part %>%
+  group_by(sample) %>%
+  mutate(Y_RA = Y/sum(Y) ) %>%
+  ungroup() %>%
+  ggplot(data = .,
+       mapping = aes(x = M, y = Y_RA, colour = species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  theme_classic()
+
+
+
 ply_part %>%
   group_by(sample) %>%
   mutate(Y_RA = Y/sum(Y) ) %>%
