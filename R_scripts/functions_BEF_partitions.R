@@ -153,13 +153,13 @@ B.ef.prep <- function(df, RYe) {
     # define extra data.frames for means at different levels
     
     # species means for each time across places (pij and Mij single bar, Isbell et al. 2018)
-    sm_t <- aggregate(df[, c("d.Poi", "M") ], list(df$species, df$time), mean)
-    names(sm_t) <- c("species", "time", "d.Poi.t", "M.t")
+    sm_t <- aggregate(df[, c("d.Poi", "M") ], list(df$time, df$species), mean)
+    names(sm_t) <- c("time", "species", "d.Poi.t", "M.t")
     df <- merge(df, sm_t, all.x = TRUE)
     
     # species means for each place across times (pik and Mik single bar, Isbell et al. 2018)
-    sm_p <- aggregate(df[, c("d.Poi", "M") ], list(df$species, df$place), mean)
-    names(sm_p) <- c("species", "place", "d.Poi.p", "M.p")
+    sm_p <- aggregate(df[, c("d.Poi", "M") ], list(df$place, df$species), mean)
+    names(sm_p) <- c("place", "species", "d.Poi.p", "M.p")
     df <- merge(df, sm_p, all.x = TRUE)
     
     # overall species mean across all times and places
@@ -223,14 +223,14 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
   # partition total insurance as:
   
   # (2a) average selection effect
-  ave.S <- (P*M)*sum( (df.p$species$d.Poi.s - mean(df$d.Poi))*(df.p$species$M - mean(df$M))  )
+  ave.S <- PMS*raw_cov(df.p$s$d.Poi.s, df.p$s$M.s)
   
   # (2b) temporal insurance effect
-  z <- merge(df.p$time, df.p$species)
+  z <- merge(df.p$t, df.p$s, by = "species")
   t.ins <- P*sum( (z$d.Poi.t - z$d.Poi.s)*(z$M.t - z$M.s) )
   
   # (2c) spatial insurance effect
-  z <- merge(df.p$place, df.p$species)
+  z <- merge(df.p$p, df.p$s, by = "species")
   s.ins <- M*sum( (z$d.Poi.p - z$d.Poi.s)*(z$M.p - z$M.s) )
   
   # (2b) spatio-temporal insurance
@@ -239,6 +239,12 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
   
   st.ins <- PMS*raw_cov(dp.n, M.n)
   
+  # make sure insurance effects add up
+  # if (tot.ins != sum(c(ave.S, t.ins, s.ins, st.ins)) ) {
+    # print("error, insurance effects do not add up")
+  # }
+  
+  # pull all these effects into a data.frame
   be_out <- data.frame(biodiversity_effect = c("net_biodiversity_effect", "total_complementarity_effect",
                                                "total_selection_effect", "non_random_overyielding",
                                                "total_insurance", "average_selection",
@@ -253,6 +259,14 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
 # test this function
 
 # isbell.2018.pt(adf = cs.6, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = t1a, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = t1b, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.1, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.2, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.3, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.4, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.5, RY.exp = c(0.5, 0.5))
+isbell.2018.pt(adf = cs.6, RY.exp = c(0.5, 0.5))
   
 
 # define a function to perform the Loreau and Hector (2001) partition
