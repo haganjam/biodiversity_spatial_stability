@@ -212,6 +212,15 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
   # (2) total selection effect
   SE.y <- PMS*raw_cov(df$dRY, df$M)
   
+  # calculate local-scale complementarity
+  y <- aggregate(df[, c("dRY", "M")], list(df$sample), mean)
+  CE.a <- sum( (S*(y$dRY)*(y$M))  )
+  
+  # calculate the local-scale selection effect
+  y <- sapply(split(df, df$sample), function(x) { (S*raw_cov(x$dRY,x$M)) })
+  SE.a <- sum(y)
+  
+  
   # partition total selection as:
   
   # (1) non-random overyielding
@@ -245,12 +254,14 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
   # }
   
   # pull all these effects into a data.frame
-  be_out <- data.frame(biodiversity_effect = c("net_biodiversity_effect", "total_complementarity_effect",
-                                               "total_selection_effect", "non_random_overyielding",
+  be_out <- data.frame(biodiversity_effect = c("net_biodiversity_effect", 
+                                               "total_complementarity_effect", "total_selection_effect", 
+                                               "local_complementarity_effect", "local_selection_effect",
+                                               "non_random_overyielding",
                                                "total_insurance", "average_selection",
                                                "temporal_insurance", "spatial_insurance",
                                                "spatio_temporal_insurance"),
-                       effect_size = c(NBE.y, CE.y, SE.y, NR.oy, tot.ins, ave.S, t.ins, s.ins, st.ins))
+                       effect_size = c(NBE.y, CE.y, SE.y, CE.a, SE.a, NR.oy, tot.ins, ave.S, t.ins, s.ins, st.ins))
   
   return(be_out)
   
