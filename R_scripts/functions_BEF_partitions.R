@@ -259,14 +259,14 @@ isbell.2018.pt <- function(adf, RY.exp = c(0.5, 0.5)) {
 # test this function
 
 # isbell.2018.pt(adf = cs.6, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = t1a, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = t1b, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.1, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.2, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.3, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.4, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.5, RY.exp = c(0.5, 0.5))
-isbell.2018.pt(adf = cs.6, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = t1a, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = t1b, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.1, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.2, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.3, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.4, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.5, RY.exp = c(0.5, 0.5))
+# isbell.2018.pt(adf = cs.6, RY.exp = c(0.5, 0.5))
   
 
 # define a function to perform the Loreau and Hector (2001) partition
